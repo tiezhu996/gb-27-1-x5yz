@@ -1,10 +1,14 @@
-import { Controller, Get, Post, Put, Param, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, UseGuards, Request } from '@nestjs/common';
 import { LiveClassesService } from './live-classes.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ChatGateway } from '../../gateways/chat.gateway';
 
 @Controller('live-classes')
 export class LiveClassesController {
-  constructor(private readonly liveClassesService: LiveClassesService) {}
+  constructor(
+    private readonly liveClassesService: LiveClassesService,
+    private readonly chatGateway: ChatGateway,
+  ) {}
 
   @Get()
   findAll() {
@@ -30,7 +34,10 @@ export class LiveClassesController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/end')
-  endLive(@Param('id') id: string, @Request() req) {
-    return this.liveClassesService.endLive(req.user.id, id);
+  async endLive(@Param('id') id: string, @Request() req) {
+    const { liveClass, kickedSocketIds } = await this.liveClassesService.endLive(req.user.id, id);
+    // 通知所有在线连接：课堂结束、名单清空，并断开连接
+    this.chatGateway.broadcastClassEnded(id, liveClass.maxParticipants, kickedSocketIds);
+    return liveClass;
   }
 }

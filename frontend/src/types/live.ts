@@ -1,3 +1,5 @@
+import { UserRole } from './user';
+
 export enum LiveClassStatus {
   SCHEDULED = 'scheduled',
   LIVE = 'live',
@@ -19,3 +21,26 @@ export interface LiveClass {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface OnlineUser {
+  userId: string;
+  userName: string;
+  role: UserRole;
+  joinedAt: Date;
+}
+
+export interface PresenceSnapshot {
+  liveClassId: string;
+  onlineCount: number;
+  studentCount: number;
+  maxParticipants: number;
+  users: OnlineUser[];
+}
+
+export type JoinErrorCode =
+  | 'unauthorized'
+  | 'class_not_found'
+  | 'forbidden'
+  | 'not_enrolled'
+  | 'not_live'
+  | 'class_full';

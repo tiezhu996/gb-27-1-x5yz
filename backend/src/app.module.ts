@@ -8,7 +8,6 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
 import { AssignmentsModule } from './modules/assignments/assignments.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
-import { ChatGateway } from './gateways/chat.gateway';
 
 @Module({
   imports: [
@@ -37,6 +36,5 @@ import { ChatGateway } from './gateways/chat.gateway';
     AttendanceModule,
     StatisticsModule,
   ],
-  providers: [ChatGateway],
 })
 export class AppModule {}
