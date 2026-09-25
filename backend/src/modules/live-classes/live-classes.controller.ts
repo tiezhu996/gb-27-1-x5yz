@@ -23,6 +23,12 @@ export class LiveClassesController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get(':id/participants')
+  getParticipants(@Param('id') id: string) {
+    return this.liveClassesService.getParticipants(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post(':id/start')
   startLive(@Param('id') id: string, @Request() req) {
     return this.liveClassesService.startLive(req.user.id, id);

@@ -7,6 +7,7 @@ export const liveClassApi = {
   create: (data: Partial<LiveClass>) => api.post<LiveClass>('/live-classes', data).then(res => res.data),
   start: (id: string) => api.post<LiveClass>(`/live-classes/${id}/start`).then(res => res.data),
   end: (id: string) => api.post<LiveClass>(`/live-classes/${id}/end`).then(res => res.data),
+  getParticipants: (id: string) => api.get(`/live-classes/${id}/participants`).then(res => res.data),
 };
 
 export const attendanceApi = {
